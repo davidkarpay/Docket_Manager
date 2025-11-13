@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Docket Manager - File Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .file-input-label:hover {
+            background-color: #2980b9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #229954;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background-color: #ecf0f1;
+            padding: 15px 20px;
+            border-radius: 4px;
+            min-width: 150px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+
+        .database-panel {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .database-panel.active {
+            display: block;
+        }
+
+        .database-panel.inactive {
+            background-color: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .database-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .database-panel.inactive .database-header {
+            color: #856404;
+        }
+
+        .database-info {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .database-panel.inactive .database-info {
+            color: #856404;
+        }
+
+        .database-location {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #2c3e50;
+            word-break: break-all;
+        }
+
+        .database-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .case-list {
+            display: none;
+        }
+
+        .case-list.active {
+            display: block;
+        }
+
+        .case-card {
+            background-color: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .case-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: #3498db;
+        }
+
+        .case-card.hidden {
+            display: none;
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .client-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .case-number {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .next-date {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .case-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .notes-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notes-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state-subtext {
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .modal-body {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .stats-container {
+            display: none;
+        }
+
+        .stats-container.active {
+            display: block;
+        }
+
+        #actionButtons {
+            display: none;
+        }
+
+        #actionButtons.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ Morning Docket Manager</h1>
+        <p class="subtitle">File-Based Database Edition - Your data, your location</p>
+
+        <div class="controls">
+            <div class="file-input-wrapper">
+                <input type="file" id="csvFile" accept=".csv" multiple />
+                <label for="csvFile" class="file-input-label">📂 Load CSV Docket(s)</label>
+            </div>
+            
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" 
+                       placeholder="Search by client name, case number, charges, attorney, judge..." 
+                       disabled />
+            </div>
+        </div>
+
+        <div id="databasePanel" class="database-panel">
+            <div class="database-header">📁 Database Configuration</div>
+            <div class="database-info">
+                <div id="databaseStatus"></div>
+                <div id="databaseLocationDisplay" class="database-location" style="display: none;"></div>
+            </div>
+            <div class="database-actions">
+                <button class="btn btn-primary" onclick="selectDatabaseLocation()">Select Database Location</button>
+                <button class="btn btn-secondary" onclick="loadFromDatabase()" id="loadDbBtn" style="display: none;">Load from Database</button>
+                <button class="btn btn-warning" onclick="changeDatabase()">Change Database File</button>
+            </div>
+        </div>
+
+        <div id="statsContainer" class="stats-container">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Total Cases</div>
+                    <div class="stat-value" id="totalCases">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Cases with Notes</div>
+                    <div class="stat-value" id="casesWithNotes">0</div>
+                </div>
+                <div class="stat-box" id="dbCasesBox" style="display: none;">
+                    <div class="stat-label">Cases in Database</div>
+                    <div class="stat-value" id="dbCases">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="actionButtons" class="action-buttons">
+            <button class="btn btn-success" onclick="exportNotes()">📝 Export Notes</button>
+            <button class="btn btn-warning" onclick="saveToDatabase()" id="saveDbBtn" style="display: none;">💾 Save to Database</button>
+            <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <div class="empty-state-text">No docket loaded</div>
+            <div class="empty-state-subtext">Upload one or more CSV files to get started, or load from your database if you have one configured</div>
+        </div>
+
+        <div id="caseList" class="case-list"></div>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-actions" id="modalActions"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let casesData = [];
+        let notesData = {};
+        let caseMetadata = {};
+        let databaseFileHandle = null;
+        let databaseDirectoryHandle = null;
+        let databaseFileName = 'docket_database.json';
+        let dbEnabled = false;
+
+        // Check if File System Access API is supported
+        const fileSystemSupported = 'showOpenFilePicker' in window || 'showDirectoryPicker' in window;
+
+        // Modal functions
+        function showModal(title, body, actions) {
+            document.getElementById('modalHeader').textContent = title;
+            document.getElementById('modalBody').innerHTML = body;
+            
+            const actionsContainer = document.getElementById('modalActions');
+            actionsContainer.innerHTML = '';
+            
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = `btn ${action.class}`;
+                button.textContent = action.text;
+                button.onclick = action.action;
+                actionsContainer.appendChild(button);
+            });
+            
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Check browser compatibility
+        function checkCompatibility() {
+            if (!fileSystemSupported) {
+                showModal('Browser Not Supported', 
+                    'Your browser does not support the File System Access API. Please use a recent version of Chrome, Edge, or another Chromium-based browser to use the file-based database feature.',
+                    [{ text: 'OK', class: 'btn-secondary', action: () => {
+                        closeModal();
+                        document.getElementById('databasePanel').style.display = 'none';
+                    }}]
+                );
+                return false;
+            }
+            return true;
+        }
+
+        // Select database location
+        async function selectDatabaseLocation() {
+            if (!checkCompatibility()) return;
+
+            try {
+                // Ask user to select a directory
+                databaseDirectoryHandle = await window.showDirectoryPicker({
+                    mode: 'readwrite',
+                    startIn: 'documents'
+                });
+
+                // Try to get existing database file
+                try {
+                    databaseFileHandle = await databaseDirectoryHandle.getFileHandle(databaseFileName, { create: false });
+                    
+                    // Database file exists, ask if they want to load it
+                    showModal('Existing Database Found', 
+                        `A database file already exists at this location. Would you like to load the existing data?`,
+                        [
+                            { text: 'Load Existing Data', class: 'btn-primary', action: async () => {
+                                closeModal();
+                                await loadFromDatabase();
+                                updateDatabaseStatus();
+                            }},
+                            { text: 'Create New Database', class: 'btn-warning', action: async () => {
+                                closeModal();
+                                // Create a new empty database
+                                await createNewDatabase();
+                            }},
+                            { text: 'Cancel', class: 'btn-secondary', action: closeModal }
+                        ]
+                    );
+                } catch (err) {
+                    // File doesn't exist, create new one
+                    await createNewDatabase();
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('Error selecting directory:', err);
+                    showModal('Error', 
+                        'Failed to select database location: ' + err.message,
+                        [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
+                    );
+                }
+            }
+        }
+
+        // Create new database file
+        async function createNewDatabase() {
+            try {
+                databaseFileHandle = await databaseDirectoryHandle.getFileHandle(databaseFileName, { create: true });
+                
+                // Initialize with empty database
+                const initialData = {
+                    version: '1.0',
+                    lastModified: new Date().toISOString(),
+                    cases: [],
+                    schema: []
+                };
+                
+                await saveDatabaseFile(initialData);
+                dbEnabled = true;
+                updateDatabaseStatus();
+                
+                showModal('Database Created', 
+                    'A new database file has been created. You can now load CSV files and they will be automatically saved to your database.',
+                    [{ text: 'OK', class: 'btn-primary', action: closeModal }]
+                );
+            } catch (err) {
+                console.error('Error creating database:', err);
+                showModal('Error', 
+                    'Failed to create database file: ' + err.message,
+                    [{ text: 'btn-secondary', class: 'btn-secondary', action: closeModal }]
+                );
+            }
+        }
+
+        // Save data to database file
+        async function saveDatabaseFile(data) {
+            if (!databaseFileHandle) {
+                throw new Error('No database file selected');
+            }
+
+            const writable = await databaseFileHandle.createWritable();
+            await writable.write(JSON.stringify(data, null, 2));
+            await writable.close();
+        }
+
+        // Load data from database file
+        async function loadDatabaseFile() {
+            if (!databaseFileHandle) {
+                throw new Error('No database file selected');
+            }
+
+            const file = await databaseFileHandle.getFile();
+            const text = await file.text();
+            return JSON.parse(text);
+        }
+
+        // Save current cases to database
+        async function saveToDatabase() {
+            if (!dbEnabled || !databaseFileHandle) {
+                showModal('No Database Configured', 
+                    'Please select a database location first.',
+                    [{ text: 'Select Location', class: 'btn-primary', action: async () => {
+                        closeModal();
+                        await selectDatabaseLocation();
+                    }},
+                    { text: 'Cancel', class: 'btn-secondary', action: closeModal }]
+                );
+                return;
+            }
+
+            try {
+                const dbData = {
+                    version: '1.0',
+                    lastModified: new Date().toISOString(),
+                    cases: casesData,
+                    schema: casesData.length > 0 ? Object.keys(casesData[0]) : []
+                };
+
+                await saveDatabaseFile(dbData);
+                
+                showModal('Saved', 
+                    `Successfully saved ${casesData.length} cases to the database.`,
+                    [{ text: 'OK', class: 'btn-primary', action: closeModal }]
+                );
+                
+                updateDatabaseStats();
+            } catch (err) {
+                console.error('Error saving to database:', err);
+                showModal('Save Failed', 
+                    'Failed to save to database: ' + err.message,
+                    [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
+                );
+            }
+        }
+
+        // Load cases from database
+        async function loadFromDatabase() {
+            if (!dbEnabled || !databaseFileHandle) {
+                showModal('No Database Configured', 
+                    'Please select a database location first.',
+                    [{ text: 'Select Location', class: 'btn-primary', action: async () => {
+                        closeModal();
+                        await selectDatabaseLocation();
+                    }},
+                    { text: 'Cancel', class: 'btn-secondary', action: closeModal }]
+                );
+                return;
+            }
+
+            try {
+                const dbData = await loadDatabaseFile();
+                
+                if (dbData.cases && dbData.cases.length > 0) {
+                    casesData = dbData.cases;
+                    displayCases();
+                    
+                    showModal('Loaded', 
+                        `Successfully loaded ${casesData.length} cases from the database.`,
+                        [{ text: 'OK', class: 'btn-primary', action: closeModal }]
+                    );
+                } else {
+                    showModal('Empty Database', 
+                        'The database exists but contains no cases.',
+                        [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
+                    );
+                }
+                
+                updateDatabaseStats();
+            } catch (err) {
+                console.error('Error loading from database:', err);
+                showModal('Load Failed', 
+                    'Failed to load from database: ' + err.message,
+                    [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
+                );
+            }
+        }
+
+        // Change database file
+        async function changeDatabase() {
+            showModal('Change Database', 
+                'Do you want to select a different database location? This will disconnect from the current database.',
+                [
+                    { text: 'Select New Location', class: 'btn-primary', action: async () => {
+                        closeModal();
+                        databaseFileHandle = null;
+                        databaseDirectoryHandle = null;
+                        dbEnabled = false;
+                        await selectDatabaseLocation();
+                    }},
+                    { text: 'Cancel', class: 'btn-secondary', action: closeModal }
+                ]
+            );
+        }
+
+        // Update database status display
+        function updateDatabaseStatus() {
+            const statusDiv = document.getElementById('databaseStatus');
+            const locationDiv = document.getElementById('databaseLocationDisplay');
+            const panel = document.getElementById('databasePanel');
+            const loadBtn = document.getElementById('loadDbBtn');
+            const saveBtn = document.getElementById('saveDbBtn');
+            
+            if (dbEnabled && databaseFileHandle) {
+                statusDiv.innerHTML = '✅ <strong>Database Connected</strong><br>Your docket data will be automatically saved to your selected location.';
+                panel.classList.add('active');
+                panel.classList.remove('inactive');
+                locationDiv.style.display = 'block';
+                locationDiv.textContent = `Location: ${databaseFileHandle.name}`;
+                loadBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'inline-block';
+            } else {
+                statusDiv.innerHTML = '⚠️ <strong>No Database Configured</strong><br>Select a location to save your docket data persistently.';
+                panel.classList.remove('active');
+                panel.classList.add('inactive');
+                locationDiv.style.display = 'none';
+                loadBtn.style.display = 'none';
+                saveBtn.style.display = 'none';
+            }
+            
+            panel.style.display = 'block';
+        }
+
+        // Update database stats
+        async function updateDatabaseStats() {
+            const dbCasesBox = document.getElementById('dbCasesBox');
+            const dbCasesValue = document.getElementById('dbCases');
+            
+            if (dbEnabled && databaseFileHandle) {
+                try {
+                    const dbData = await loadDatabaseFile();
+                    const count = dbData.cases ? dbData.cases.length : 0;
+                    dbCasesValue.textContent = count;
+                    dbCasesBox.style.display = 'block';
+                } catch (err) {
+                    dbCasesBox.style.display = 'none';
+                }
+            } else {
+                dbCasesBox.style.display = 'none';
+            }
+        }
+
+        // Parse CSV
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length === 0) return { headers: [], data: [] };
+
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const values = [];
+                let currentValue = '';
+                let insideQuotes = false;
+
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    
+                    if (char === '"') {
+                        insideQuotes = !insideQuotes;
+                    } else if (char === ',' && !insideQuotes) {
+                        values.push(currentValue.trim());
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                values.push(currentValue.trim());
+
+                if (values.length === headers.length) {
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index].replace(/^"|"$/g, '');
+                    });
+                    data.push(row);
+                }
+            }
+
+            return { headers, data };
+        }
+
+        // Display cases
+        function displayCases() {
+            const caseList = document.getElementById('caseList');
+            caseList.innerHTML = '';
+
+            if (casesData.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                document.getElementById('caseList').classList.remove('active');
+                document.getElementById('statsContainer').classList.remove('active');
+                document.getElementById('actionButtons').classList.remove('active');
+                document.getElementById('searchInput').disabled = true;
+                return;
+            }
+
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('caseList').classList.add('active');
+            document.getElementById('statsContainer').classList.add('active');
+            document.getElementById('actionButtons').classList.add('active');
+            document.getElementById('searchInput').disabled = false;
+
+            casesData.forEach((caseData, index) => {
+                const caseId = `case-${index}`;
+                const caseCard = document.createElement('div');
+                caseCard.className = 'case-card';
+                caseCard.id = caseId;
+
+                const clientName = caseData['Client Name'] || caseData['Defendant'] || 'Unknown Client';
+                const caseNumber = caseData['Case Number'] || caseData['Case #'] || 'No Case Number';
+                const nextDate = caseData['Next Date'] || caseData['Date'] || 'No Date Set';
+
+                caseMetadata[caseId] = {
+                    clientName: clientName,
+                    caseNumber: caseNumber,
+                    nextDate: nextDate
+                };
+
+                let detailsHTML = '';
+                Object.keys(caseData).forEach(key => {
+                    if (!['Client Name', 'Defendant', 'Case Number', 'Case #', 'Next Date', 'Date'].includes(key)) {
+                        detailsHTML += `
+                            <div class="detail-item">
+                                <div class="detail-label">${key}</div>
+                                <div class="detail-value">${caseData[key] || 'N/A'}</div>
+                            </div>
+                        `;
+                    }
+                });
+
+                const savedNotes = notesData[caseId] || '';
+
+                caseCard.innerHTML = `
+                    <div class="case-header">
+                        <div>
+                            <div class="client-name">${clientName}</div>
+                            <div class="case-number">${caseNumber}</div>
+                        </div>
+                        <div class="next-date">📅 ${nextDate}</div>
+                    </div>
+                    <div class="case-details">
+                        ${detailsHTML}
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <div class="notes-label">Case Notes</div>
+                        </div>
+                        <textarea class="notes-textarea" placeholder="Add notes for this case..." 
+                                  data-case-id="${caseId}">${savedNotes}</textarea>
+                    </div>
+                `;
+
+                caseList.appendChild(caseCard);
+            });
+
+            document.querySelectorAll('.notes-textarea').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    const caseId = this.getAttribute('data-case-id');
+                    notesData[caseId] = this.value;
+                    saveNotes();
+                    updateStats();
+                });
+            });
+
+            updateStats();
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalCases').textContent = casesData.length;
+            const notesCount = Object.values(notesData).filter(note => note.trim()).length;
+            document.getElementById('casesWithNotes').textContent = notesCount;
+        }
+
+        // Perform search
+        function performSearch(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            document.querySelectorAll('.case-card').forEach(card => {
+                if (!searchTerm) {
+                    card.classList.remove('hidden');
+                    return;
+                }
+
+                const cardText = card.textContent.toLowerCase();
+                if (cardText.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Save notes to localStorage
+        function saveNotes() {
+            try {
+                localStorage.setItem('docketNotes', JSON.stringify(notesData));
+                localStorage.setItem('docketCaseMetadata', JSON.stringify(caseMetadata));
+            } catch (e) {
+                console.error('Error saving notes to localStorage:', e);
+            }
+        }
+
+        // Load notes from localStorage
+        function loadNotes() {
+            try {
+                const savedNotes = localStorage.getItem('docketNotes');
+                const savedMetadata = localStorage.getItem('docketCaseMetadata');
+                
+                if (savedNotes) {
+                    notesData = JSON.parse(savedNotes);
+                }
+                if (savedMetadata) {
+                    caseMetadata = JSON.parse(savedMetadata);
+                }
+            } catch (e) {
+                console.error('Error loading notes from localStorage:', e);
+            }
+        }
+
+        // CSV file handler
+        document.getElementById('csvFile').addEventListener('change', async function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            // If there are existing cases, ask if user wants to append or replace
+            if (casesData.length > 0) {
+                showModal('Load Multiple Files', 
+                    `You have ${casesData.length} cases currently loaded. Do you want to:<br><br>
+                    <strong>Append:</strong> Add new cases to existing ones (duplicates will be skipped)<br>
+                    <strong>Replace:</strong> Clear existing cases and load only the new files`,
+                    [
+                        { text: 'Append', class: 'btn-primary', action: async () => {
+                            closeModal();
+                            await processMultipleCSVFiles(files, true);
+                        }},
+                        { text: 'Replace', class: 'btn-warning', action: async () => {
+                            closeModal();
+                            await processMultipleCSVFiles(files, false);
+                        }},
+                        { text: 'Cancel', class: 'btn-secondary', action: () => {
+                            closeModal();
+                            e.target.value = ''; // Clear file input
+                        }}
+                    ]
+                );
+            } else {
+                await processMultipleCSVFiles(files, false);
+            }
+        });
+
+        // Process multiple CSV files
+        async function processMultipleCSVFiles(files, append) {
+            let newCases = [];
+            let totalProcessed = 0;
+            let failedFiles = [];
+            let fileDetails = [];
+
+            // If not appending, clear existing cases
+            if (!append) {
+                casesData = [];
+            }
+
+            // Process each file
+            for (const file of files) {
+                try {
+                    const csvData = await readFileAsText(file);
+                    const { headers, data } = parseCSV(csvData);
+
+                    if (data.length > 0) {
+                        newCases = newCases.concat(data);
+                        fileDetails.push({
+                            name: file.name,
+                            count: data.length,
+                            success: true
+                        });
+                        totalProcessed += data.length;
+                    } else {
+                        fileDetails.push({
+                            name: file.name,
+                            count: 0,
+                            success: false,
+                            error: 'No data found'
+                        });
+                        failedFiles.push(file.name);
+                    }
+                } catch (error) {
+                    console.error(`Error processing ${file.name}:`, error);
+                    fileDetails.push({
+                        name: file.name,
+                        count: 0,
+                        success: false,
+                        error: error.message
+                    });
+                    failedFiles.push(file.name);
+                }
+            }
+
+            // Remove duplicates based on case number
+            if (append && casesData.length > 0) {
+                const existingCaseNumbers = new Set(
+                    casesData.map(c => c['Case Number'] || c['Case #'] || '')
+                        .filter(num => num)
+                );
+                
+                const beforeCount = newCases.length;
+                newCases = newCases.filter(c => {
+                    const caseNum = c['Case Number'] || c['Case #'] || '';
+                    return caseNum && !existingCaseNumbers.has(caseNum);
+                });
+                
+                const duplicatesRemoved = beforeCount - newCases.length;
+                
+                casesData = casesData.concat(newCases);
+                
+                // Show detailed summary
+                let summaryHTML = `<strong>Import Summary:</strong><br><br>`;
+                summaryHTML += `Files processed: ${files.length}<br>`;
+                summaryHTML += `Total cases in files: ${totalProcessed}<br>`;
+                summaryHTML += `Duplicates skipped: ${duplicatesRemoved}<br>`;
+                summaryHTML += `New cases added: ${newCases.length}<br>`;
+                summaryHTML += `Total cases now: ${casesData.length}<br><br>`;
+                
+                if (fileDetails.length > 0) {
+                    summaryHTML += `<strong>File Details:</strong><br>`;
+                    summaryHTML += `<div style="max-height: 200px; overflow-y: auto; margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 4px;">`;
+                    fileDetails.forEach(detail => {
+                        if (detail.success) {
+                            summaryHTML += `✅ ${detail.name}: ${detail.count} cases<br>`;
+                        } else {
+                            summaryHTML += `❌ ${detail.name}: ${detail.error}<br>`;
+                        }
+                    });
+                    summaryHTML += `</div>`;
+                }
+                
+                displayCases();
+                
+                // Auto-save to database if enabled
+                if (dbEnabled && databaseFileHandle && newCases.length > 0) {
+                    try {
+                        await saveToDatabase();
+                        summaryHTML += `<br><br>✅ Cases automatically saved to database.`;
+                    } catch (err) {
+                        console.error('Auto-save failed:', err);
+                        summaryHTML += `<br><br>⚠️ Warning: Auto-save to database failed.`;
+                    }
+                }
+                
+                showModal('Files Loaded', summaryHTML, 
+                    [{ text: 'OK', class: 'btn-primary', action: closeModal }]
+                );
+            } else {
+                // Not appending or no existing cases
+                casesData = newCases;
+                
+                if (casesData.length > 0) {
+                    // Show detailed summary
+                    let summaryHTML = `<strong>Import Summary:</strong><br><br>`;
+                    summaryHTML += `Files processed: ${files.length}<br>`;
+                    summaryHTML += `Total cases loaded: ${casesData.length}<br><br>`;
+                    
+                    if (fileDetails.length > 0) {
+                        summaryHTML += `<strong>File Details:</strong><br>`;
+                        summaryHTML += `<div style="max-height: 200px; overflow-y: auto; margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 4px;">`;
+                        fileDetails.forEach(detail => {
+                            if (detail.success) {
+                                summaryHTML += `✅ ${detail.name}: ${detail.count} cases<br>`;
+                            } else {
+                                summaryHTML += `❌ ${detail.name}: ${detail.error}<br>`;
+                            }
+                        });
+                        summaryHTML += `</div>`;
+                    }
+                    
+                    displayCases();
+                    
+                    // Auto-save to database if enabled
+                    if (dbEnabled && databaseFileHandle) {
+                        try {
+                            await saveToDatabase();
+                            summaryHTML += `<br><br>✅ Cases automatically saved to database.`;
+                        } catch (err) {
+                            console.error('Auto-save failed:', err);
+                            summaryHTML += `<br><br>⚠️ Warning: Auto-save to database failed.`;
+                        }
+                    }
+                    
+                    showModal('Files Loaded', summaryHTML, 
+                        [{ text: 'OK', class: 'btn-primary', action: closeModal }]
+                    );
+                } else {
+                    showModal('No Data', 
+                        'No valid data was found in any of the selected files.',
+                        [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
+                    );
+                }
+            }
+
+            // Clear file input
+            document.getElementById('csvFile').value = '';
+        }
+
+        // Helper function to read file as text
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => resolve(event.target.result);
+                reader.onerror = (error) => reject(error);
+                reader.readAsText(file);
+            });
+        }
+
+        // Search input handler
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            performSearch(e.target.value);
+        });
+
+        // Export notes
+        function exportNotes() {
+            const notesEntries = Object.entries(notesData)
+                .filter(([_, notes]) => notes.trim())
+                .map(([caseId, notes]) => {
+                    const metadata = caseMetadata[caseId];
+                    if (metadata) {
+                        return `CLIENT: ${metadata.clientName}
+CASE NUMBER: ${metadata.caseNumber}
+NEXT DATE: ${metadata.nextDate}
+
+NOTES:
+${notes}
+
+${'='.repeat(80)}`;
+                    } else {
+                        return `CASE ID: ${caseId}
+
+NOTES:
+${notes}
+
+${'='.repeat(80)}`;
+                    }
+                });
+
+            if (notesEntries.length === 0) {
+                showModal('No Notes to Export', 
+                    'There are currently no notes to export. Add notes to cases first.',
+                    [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
+                );
+                return;
+            }
+
+            const header = `MORNING DOCKET NOTES EXPORT
+Generated: ${new Date().toLocaleString()}
+Total Cases with Notes: ${notesEntries.length}
+
+${'='.repeat(80)}
+
+`;
+
+            const notesText = header + notesEntries.join('\n\n');
+
+            const blob = new Blob([notesText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `docket-notes-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Clear all data
+        function clearAllData() {
+            showModal('Clear All Data', 
+                'This will remove all loaded cases and notes. The database file will not be deleted. This action cannot be undone. Are you sure?',
+                [
+                    { text: 'Yes, Clear Everything', class: 'btn-danger', action: () => {
+                        casesData = [];
+                        notesData = {};
+                        caseMetadata = {};
+                        localStorage.removeItem('docketNotes');
+                        localStorage.removeItem('docketCaseMetadata');
+                        
+                        document.getElementById('caseList').innerHTML = '';
+                        document.getElementById('caseList').classList.remove('active');
+                        document.getElementById('emptyState').style.display = 'block';
+                        document.getElementById('statsContainer').classList.remove('active');
+                        document.getElementById('actionButtons').classList.remove('active');
+                        document.getElementById('searchInput').value = '';
+                        document.getElementById('searchInput').disabled = true;
+                        document.getElementById('csvFile').value = '';
+                        
+                        updateDatabaseStats();
+                        closeModal();
+                    }},
+                    { text: 'Cancel', class: 'btn-secondary', action: closeModal }
+                ]
+            );
+        }
+
+        // Initialize on load
+        async function initialize() {
+            loadNotes();
+            checkCompatibility();
+            updateDatabaseStatus();
+        }
+
+        initialize();
+    </script>
+</body>
+</html>

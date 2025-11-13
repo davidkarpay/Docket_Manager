@@ -1,0 +1,14 @@
+# Case Data Extractor Dependencies
+
+# Browser automation
+playwright==1.41.0
+
+# HTTP client for LM Studio API
+httpx==0.26.0
+
+# Better terminal UI
+rich==13.7.0
+click==8.1.7
+
+# Date handling
+python-dateutil==2.8.2
