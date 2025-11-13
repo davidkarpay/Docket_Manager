@@ -27,12 +27,23 @@ Your complete case data extraction tool includes:
 - [ ] Copy all tool files to directory
 - [ ] Open terminal in tool directory
 
-### Phase 3: Python Setup
+### Phase 3: Python Setup (Virtual Environment - RECOMMENDED)
 ```bash
+- [ ] python -m venv venv  # Create virtual environment
+- [ ] source venv/bin/activate  # Linux/Mac (or venv\Scripts\activate on Windows)
+- [ ] Verify prompt shows (venv)
 - [ ] pip install -r case_extractor_requirements.txt
 - [ ] playwright install chromium
 - [ ] python --version  # Verify 3.10+
 ```
+
+**Why virtual environment?**
+- Isolates dependencies from system Python
+- Prevents conflicts with other projects
+- Easy to delete/recreate if issues occur
+- Python best practice for all projects
+
+**Remember**: Activate venv each time you open a new terminal!
 
 ### Phase 4: LM Studio Setup
 - [ ] Launch LM Studio
@@ -68,21 +79,28 @@ Your complete case data extraction tool includes:
 
 ### First Time Setup
 ```bash
-# 1. Install everything
+# 1. Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac (or venv\Scripts\activate on Windows)
+
+# 2. Install everything
 pip install -r case_extractor_requirements.txt
 playwright install chromium
 
-# 2. Start LM Studio (manually)
+# 3. Start LM Studio (manually)
 # - Open LM Studio app
 # - Load LLaVA model
 # - Start server
 
-# 3. Test connection
+# 4. Test connection
 python case_extractor_cli.py  # Option 5
 ```
 
 ### Daily Use
 ```bash
+# Activate virtual environment (if using)
+source venv/bin/activate  # Linux/Mac (or venv\Scripts\activate on Windows)
+
 # Interactive mode
 python case_extractor_cli.py
 
@@ -175,18 +193,21 @@ your-tool-directory/
 # 2. Create case list with URLs
 #    Edit cases_template.csv or generate programmatically
 
-# 3. Run extraction
+# 3. Activate virtual environment (if using)
+source venv/bin/activate  # Linux/Mac (or venv\Scripts\activate on Windows)
+
+# 4. Run extraction
 python case_extractor_cli.py
 # → Select 2 (Batch mode)
 # → Enter your CSV file path
 # → Wait for processing (3-5 sec per case)
 
-# 4. Import to docket manager
+# 5. Import to docket manager
 #    Open morning_docket_manager_with_database.html
 #    Load extracted CSV
 #    Review and add notes
 
-# 5. Ready for court!
+# 6. Ready for court!
 ```
 
 ## 🔒 Security Checklist

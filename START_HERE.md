@@ -54,26 +54,47 @@ You have a **complete, production-ready tool** for extracting case data from cou
 
 ## 🏃 Quick Start (30 Minutes)
 
-### Step 1: Install Python Dependencies (5 min)
+### Step 1: Create Virtual Environment (2 min) - RECOMMENDED
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate it
+source venv/bin/activate      # On Linux/Mac
+# OR
+venv\Scripts\activate         # On Windows
+
+# You should see (venv) in your terminal prompt
+```
+
+**Why use a virtual environment?**
+- Isolates project dependencies from system Python
+- Prevents conflicts with other Python projects
+- Easy to delete and recreate if needed
+- Python development best practice
+
+**Note**: You'll need to activate the venv each time you open a new terminal.
+
+### Step 2: Install Python Dependencies (5 min)
 ```bash
 pip install -r case_extractor_requirements.txt
 playwright install chromium
 ```
 
-### Step 2: Setup LM Studio (15 min)
+### Step 3: Setup LM Studio (15 min)
 1. Download from **https://lmstudio.ai/**
 2. Install and launch
 3. Search for "llava-v1.6-mistral-7b"
 4. Download model (~8GB)
 5. Load model → Start server
 
-### Step 3: Test Run (5 min)
+### Step 4: Test Run (5 min)
 ```bash
 python case_extractor_cli.py
 # Select option 5: Check LM Studio connection
 ```
 
-### Step 4: First Extraction (5 min)
+### Step 5: First Extraction (5 min)
 ```bash
 python case_extractor_cli.py
 # Select option 1: Single case extraction
@@ -258,8 +279,9 @@ You'll know it's working when:
 4. ✅ **Customize**: Update court_configs.py
 5. ✅ **Deploy**: Integrate into your workflow
 
-### First Extraction in 3 Commands:
+### First Extraction in 4 Commands:
 ```bash
+python -m venv venv && source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r case_extractor_requirements.txt
 playwright install chromium
 python case_extractor_cli.py
@@ -279,6 +301,11 @@ This tool was designed specifically for public defenders who:
 ## 📝 Quick Command Reference
 
 ```bash
+# Setup virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+
 # Install
 pip install -r case_extractor_requirements.txt
 playwright install chromium
