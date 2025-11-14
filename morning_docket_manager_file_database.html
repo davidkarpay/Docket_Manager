@@ -148,6 +148,148 @@
             border-color: #3498db;
         }
 
+        .advanced-search-toggle {
+            background-color: #9b59b6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            font-size: 14px;
+        }
+
+        .advanced-search-toggle:hover {
+            background-color: #8e44ad;
+        }
+
+        .advanced-search-panel {
+            background-color: #f8f9fa;
+            border: 2px solid #9b59b6;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .advanced-search-panel.active {
+            display: block;
+        }
+
+        .advanced-search-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .search-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .filter-select {
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            background-color: white;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #9b59b6;
+        }
+
+        .filter-input {
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #9b59b6;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .event-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .event-badge.speedy-trial {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .event-badge.appearance-waiver {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .event-badge.continuance {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        .event-badge.plea {
+            background-color: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .event-badge.bond {
+            background-color: #fce4ec;
+            color: #c2185b;
+        }
+
+        .event-badge.motion {
+            background-color: #e0f2f1;
+            color: #00695c;
+        }
+
+        .event-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .event-badge.active {
+            border-color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
         .stats {
             display: flex;
             gap: 20px;
@@ -440,6 +582,214 @@
         #actionButtons.active {
             display: flex;
         }
+
+        .case-history-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .add-event-btn {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .add-event-btn:hover {
+            background-color: #8e44ad;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 15px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ddd;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #3498db;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #3498db;
+        }
+
+        .timeline-item.speedy-trial::before {
+            background-color: #2e7d32;
+            box-shadow: 0 0 0 2px #2e7d32;
+        }
+
+        .timeline-item.appearance-waiver::before {
+            background-color: #1565c0;
+            box-shadow: 0 0 0 2px #1565c0;
+        }
+
+        .timeline-item.continuance::before {
+            background-color: #e65100;
+            box-shadow: 0 0 0 2px #e65100;
+        }
+
+        .timeline-item.plea::before {
+            background-color: #6a1b9a;
+            box-shadow: 0 0 0 2px #6a1b9a;
+        }
+
+        .timeline-item.bond::before {
+            background-color: #c2185b;
+            box-shadow: 0 0 0 2px #c2185b;
+        }
+
+        .timeline-item.motion::before {
+            background-color: #00695c;
+            box-shadow: 0 0 0 2px #00695c;
+        }
+
+        .event-type {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            text-transform: capitalize;
+        }
+
+        .event-date {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .event-description {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .event-source {
+            font-size: 12px;
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .event-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .event-action-btn {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: opacity 0.3s;
+        }
+
+        .event-action-btn:hover {
+            opacity: 0.8;
+        }
+
+        .event-action-btn.delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 30px;
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .event-form {
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            margin-bottom: 15px;
+        }
+
+        .form-row label {
+            display: block;
+            font-size: 13px;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            outline: none;
+            border-color: #9b59b6;
+        }
+
+        .form-row textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -452,11 +802,67 @@
                 <input type="file" id="csvFile" accept=".csv" multiple />
                 <label for="csvFile" class="file-input-label">📂 Load CSV Docket(s)</label>
             </div>
-            
+
             <div class="search-wrapper">
-                <input type="text" id="searchInput" class="search-input" 
-                       placeholder="Search by client name, case number, charges, attorney, judge..." 
+                <input type="text" id="searchInput" class="search-input"
+                       placeholder="Search by client name, case number, charges, attorney, judge..."
                        disabled />
+            </div>
+
+            <button class="advanced-search-toggle" onclick="toggleAdvancedSearch()" id="advancedSearchToggle" style="display: none;">
+                🔍 Advanced Search
+            </button>
+        </div>
+
+        <div id="advancedSearchPanel" class="advanced-search-panel">
+            <div class="advanced-search-header">🎯 Case History Search</div>
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label class="filter-label">Event Type</label>
+                    <select id="eventTypeFilter" class="filter-select">
+                        <option value="">All Event Types</option>
+                        <option value="speedy-trial">Speedy Trial Waived</option>
+                        <option value="appearance-waiver">Appearance Waiver</option>
+                        <option value="continuance">Continuance Granted</option>
+                        <option value="plea">Plea Entry</option>
+                        <option value="bond">Bond Modification</option>
+                        <option value="motion">Motion Filed</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">From Date</label>
+                    <input type="date" id="fromDateFilter" class="filter-input" />
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">To Date</label>
+                    <input type="date" id="toDateFilter" class="filter-input" />
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Event Description</label>
+                    <input type="text" id="eventDescFilter" class="filter-input"
+                           placeholder="Search event details..." />
+                </div>
+            </div>
+            <div class="event-badges">
+                <span class="event-badge speedy-trial" onclick="quickFilterEvent('speedy-trial')">
+                    ⚡ Speedy Trial Waived
+                </span>
+                <span class="event-badge appearance-waiver" onclick="quickFilterEvent('appearance-waiver')">
+                    👤 Appearance Waiver
+                </span>
+                <span class="event-badge continuance" onclick="quickFilterEvent('continuance')">
+                    ⏰ Continuance
+                </span>
+                <span class="event-badge plea" onclick="quickFilterEvent('plea')">
+                    ⚖️ Plea Entry
+                </span>
+                <span class="event-badge bond" onclick="quickFilterEvent('bond')">
+                    💰 Bond Modification
+                </span>
+                <span class="event-badge motion" onclick="quickFilterEvent('motion')">
+                    📄 Motion Filed
+                </span>
             </div>
         </div>
 
@@ -518,13 +924,59 @@
         let casesData = [];
         let notesData = {};
         let caseMetadata = {};
+        let caseEvents = {}; // Maps case IDs to their events array
         let databaseFileHandle = null;
         let databaseDirectoryHandle = null;
         let databaseFileName = 'docket_database.json';
         let dbEnabled = false;
+        let activeEventFilters = {
+            eventType: '',
+            fromDate: '',
+            toDate: '',
+            description: ''
+        };
 
         // Check if File System Access API is supported
         const fileSystemSupported = 'showOpenFilePicker' in window || 'showDirectoryPicker' in window;
+
+        // Event type configurations
+        const eventTypes = {
+            'speedy-trial': {
+                label: 'Speedy Trial Waived',
+                icon: '⚡',
+                color: '#2e7d32'
+            },
+            'appearance-waiver': {
+                label: 'Appearance Waiver',
+                icon: '👤',
+                color: '#1565c0'
+            },
+            'continuance': {
+                label: 'Continuance Granted',
+                icon: '⏰',
+                color: '#e65100'
+            },
+            'plea': {
+                label: 'Plea Entry',
+                icon: '⚖️',
+                color: '#6a1b9a'
+            },
+            'bond': {
+                label: 'Bond Modification',
+                icon: '💰',
+                color: '#c2185b'
+            },
+            'motion': {
+                label: 'Motion Filed',
+                icon: '📄',
+                color: '#00695c'
+            },
+            'other': {
+                label: 'Other Event',
+                icon: '📋',
+                color: '#3498db'
+            }
+        };
 
         // Modal functions
         function showModal(title, body, actions) {
@@ -615,26 +1067,28 @@
         async function createNewDatabase() {
             try {
                 databaseFileHandle = await databaseDirectoryHandle.getFileHandle(databaseFileName, { create: true });
-                
-                // Initialize with empty database
+
+                // Initialize with v2.0 database schema
                 const initialData = {
-                    version: '1.0',
+                    version: '2.0',
                     lastModified: new Date().toISOString(),
                     cases: [],
-                    schema: []
+                    schema: [],
+                    events: {},
+                    notes: {}
                 };
-                
+
                 await saveDatabaseFile(initialData);
                 dbEnabled = true;
                 updateDatabaseStatus();
-                
-                showModal('Database Created', 
-                    'A new database file has been created. You can now load CSV files and they will be automatically saved to your database.',
+
+                showModal('Database Created',
+                    'A new database file has been created with event tracking support. You can now load CSV files and track case history.',
                     [{ text: 'OK', class: 'btn-primary', action: closeModal }]
                 );
             } catch (err) {
                 console.error('Error creating database:', err);
-                showModal('Error', 
+                showModal('Error',
                     'Failed to create database file: ' + err.message,
                     [{ text: 'btn-secondary', class: 'btn-secondary', action: closeModal }]
                 );
@@ -666,7 +1120,7 @@
         // Save current cases to database
         async function saveToDatabase() {
             if (!dbEnabled || !databaseFileHandle) {
-                showModal('No Database Configured', 
+                showModal('No Database Configured',
                     'Please select a database location first.',
                     [{ text: 'Select Location', class: 'btn-primary', action: async () => {
                         closeModal();
@@ -679,23 +1133,25 @@
 
             try {
                 const dbData = {
-                    version: '1.0',
+                    version: '2.0',
                     lastModified: new Date().toISOString(),
                     cases: casesData,
-                    schema: casesData.length > 0 ? Object.keys(casesData[0]) : []
+                    schema: casesData.length > 0 ? Object.keys(casesData[0]) : [],
+                    events: caseEvents,
+                    notes: notesData
                 };
 
                 await saveDatabaseFile(dbData);
-                
-                showModal('Saved', 
-                    `Successfully saved ${casesData.length} cases to the database.`,
+
+                showModal('Saved',
+                    `Successfully saved ${casesData.length} cases and their event history to the database.`,
                     [{ text: 'OK', class: 'btn-primary', action: closeModal }]
                 );
-                
+
                 updateDatabaseStats();
             } catch (err) {
                 console.error('Error saving to database:', err);
-                showModal('Save Failed', 
+                showModal('Save Failed',
                     'Failed to save to database: ' + err.message,
                     [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
                 );
@@ -705,7 +1161,7 @@
         // Load cases from database
         async function loadFromDatabase() {
             if (!dbEnabled || !databaseFileHandle) {
-                showModal('No Database Configured', 
+                showModal('No Database Configured',
                     'Please select a database location first.',
                     [{ text: 'Select Location', class: 'btn-primary', action: async () => {
                         closeModal();
@@ -717,31 +1173,64 @@
             }
 
             try {
-                const dbData = await loadDatabaseFile();
-                
+                let dbData = await loadDatabaseFile();
+
+                // Migrate v1.0 to v2.0 if needed
+                if (dbData.version === '1.0') {
+                    dbData = await migrateDatabase(dbData);
+                }
+
                 if (dbData.cases && dbData.cases.length > 0) {
                     casesData = dbData.cases;
+                    caseEvents = dbData.events || {};
+                    notesData = dbData.notes || {};
+
                     displayCases();
-                    
-                    showModal('Loaded', 
-                        `Successfully loaded ${casesData.length} cases from the database.`,
+
+                    const eventCount = Object.values(caseEvents).reduce((sum, events) => sum + (events?.length || 0), 0);
+
+                    showModal('Loaded',
+                        `Successfully loaded ${casesData.length} cases with ${eventCount} historical events from the database.`,
                         [{ text: 'OK', class: 'btn-primary', action: closeModal }]
                     );
                 } else {
-                    showModal('Empty Database', 
+                    showModal('Empty Database',
                         'The database exists but contains no cases.',
                         [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
                     );
                 }
-                
+
                 updateDatabaseStats();
             } catch (err) {
                 console.error('Error loading from database:', err);
-                showModal('Load Failed', 
+                showModal('Load Failed',
                     'Failed to load from database: ' + err.message,
                     [{ text: 'OK', class: 'btn-secondary', action: closeModal }]
                 );
             }
+        }
+
+        // Migrate database from v1.0 to v2.0
+        async function migrateDatabase(oldData) {
+            const newData = {
+                version: '2.0',
+                lastModified: new Date().toISOString(),
+                cases: oldData.cases || [],
+                schema: oldData.schema || [],
+                events: {},
+                notes: notesData
+            };
+
+            // Save migrated database
+            if (databaseFileHandle) {
+                await saveDatabaseFile(newData);
+                showModal('Database Upgraded',
+                    'Your database has been automatically upgraded to v2.0 with event tracking support!',
+                    [{ text: 'OK', class: 'btn-success', action: closeModal }]
+                );
+            }
+
+            return newData;
         }
 
         // Change database file
@@ -808,6 +1297,239 @@
             }
         }
 
+        // Event Management Functions
+        function generateEventId() {
+            return 'evt-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function addEvent(caseId, eventType, description, eventDate, source = 'manual') {
+            if (!caseEvents[caseId]) {
+                caseEvents[caseId] = [];
+            }
+
+            const newEvent = {
+                id: generateEventId(),
+                timestamp: new Date().toISOString(),
+                eventDate: eventDate || new Date().toISOString(),
+                eventType: eventType,
+                description: description,
+                source: source
+            };
+
+            caseEvents[caseId].push(newEvent);
+
+            // Sort events by date (newest first)
+            caseEvents[caseId].sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+
+            // Auto-save if database is enabled
+            if (dbEnabled && databaseFileHandle) {
+                saveToDatabase().catch(err => console.error('Auto-save failed:', err));
+            }
+
+            return newEvent;
+        }
+
+        function deleteEvent(caseId, eventId) {
+            if (!caseEvents[caseId]) return;
+
+            caseEvents[caseId] = caseEvents[caseId].filter(e => e.id !== eventId);
+
+            // Auto-save if database is enabled
+            if (dbEnabled && databaseFileHandle) {
+                saveToDatabase().catch(err => console.error('Auto-save failed:', err));
+            }
+        }
+
+        function getCaseEvents(caseId) {
+            return caseEvents[caseId] || [];
+        }
+
+        function renderEventTimeline(caseId) {
+            const events = getCaseEvents(caseId);
+
+            if (events.length === 0) {
+                return '<div class="empty-history">No case history events recorded yet.</div>';
+            }
+
+            let html = '<div class="timeline">';
+            events.forEach(event => {
+                const eventConfig = eventTypes[event.eventType] || eventTypes['other'];
+                const eventDate = new Date(event.eventDate).toLocaleDateString();
+                const eventTime = new Date(event.eventDate).toLocaleTimeString();
+
+                html += `
+                    <div class="timeline-item ${event.eventType}">
+                        <div class="event-type">${eventConfig.icon} ${eventConfig.label}</div>
+                        <div class="event-date">📅 ${eventDate} at ${eventTime}</div>
+                        <div class="event-description">${event.description}</div>
+                        <div class="event-source">Source: ${event.source}</div>
+                        <div class="event-actions">
+                            <button class="event-action-btn delete" onclick="confirmDeleteEvent('${caseId}', '${event.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+
+            return html;
+        }
+
+        function confirmDeleteEvent(caseId, eventId) {
+            showModal('Delete Event',
+                'Are you sure you want to delete this event? This action cannot be undone.',
+                [
+                    { text: 'Delete', class: 'btn-danger', action: () => {
+                        deleteEvent(caseId, eventId);
+                        closeModal();
+                        displayCases();
+                        applyEventFilters();
+                    }},
+                    { text: 'Cancel', class: 'btn-secondary', action: closeModal }
+                ]
+            );
+        }
+
+        function showAddEventForm(caseId) {
+            const formHtml = `
+                <div class="event-form">
+                    <div class="form-row">
+                        <label>Event Type</label>
+                        <select id="newEventType">
+                            <option value="speedy-trial">⚡ Speedy Trial Waived</option>
+                            <option value="appearance-waiver">👤 Appearance Waiver</option>
+                            <option value="continuance">⏰ Continuance Granted</option>
+                            <option value="plea">⚖️ Plea Entry</option>
+                            <option value="bond">💰 Bond Modification</option>
+                            <option value="motion">📄 Motion Filed</option>
+                            <option value="other">📋 Other Event</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label>Event Date</label>
+                        <input type="date" id="newEventDate" value="${new Date().toISOString().split('T')[0]}" />
+                    </div>
+                    <div class="form-row">
+                        <label>Description</label>
+                        <textarea id="newEventDescription" placeholder="Enter event details..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label>Source</label>
+                        <input type="text" id="newEventSource" value="manual" placeholder="e.g., court record, filing, hearing" />
+                    </div>
+                </div>
+            `;
+
+            showModal('Add Case Event', formHtml, [
+                { text: 'Add Event', class: 'btn-success', action: () => {
+                    const eventType = document.getElementById('newEventType').value;
+                    const eventDate = document.getElementById('newEventDate').value;
+                    const description = document.getElementById('newEventDescription').value;
+                    const source = document.getElementById('newEventSource').value || 'manual';
+
+                    if (description.trim()) {
+                        addEvent(caseId, eventType, description, new Date(eventDate).toISOString(), source);
+                        closeModal();
+                        displayCases();
+                        applyEventFilters();
+                    } else {
+                        alert('Please enter a description for the event.');
+                    }
+                }},
+                { text: 'Cancel', class: 'btn-secondary', action: closeModal }
+            ]);
+        }
+
+        // Advanced Search Functions
+        function toggleAdvancedSearch() {
+            const panel = document.getElementById('advancedSearchPanel');
+            panel.classList.toggle('active');
+        }
+
+        function quickFilterEvent(eventType) {
+            // Toggle the active class on the badge
+            const badges = document.querySelectorAll('.event-badge');
+            badges.forEach(badge => {
+                if (badge.getAttribute('onclick').includes(eventType)) {
+                    badge.classList.toggle('active');
+                }
+            });
+
+            // Set the filter
+            const currentFilter = document.getElementById('eventTypeFilter').value;
+            if (currentFilter === eventType) {
+                document.getElementById('eventTypeFilter').value = '';
+                activeEventFilters.eventType = '';
+            } else {
+                document.getElementById('eventTypeFilter').value = eventType;
+                activeEventFilters.eventType = eventType;
+            }
+
+            applyEventFilters();
+        }
+
+        function applyEventFilters() {
+            // Get filter values
+            activeEventFilters.eventType = document.getElementById('eventTypeFilter').value;
+            activeEventFilters.fromDate = document.getElementById('fromDateFilter').value;
+            activeEventFilters.toDate = document.getElementById('toDateFilter').value;
+            activeEventFilters.description = document.getElementById('eventDescFilter').value.toLowerCase();
+
+            // Check if any filters are active
+            const hasActiveFilters = activeEventFilters.eventType ||
+                                    activeEventFilters.fromDate ||
+                                    activeEventFilters.toDate ||
+                                    activeEventFilters.description;
+
+            if (!hasActiveFilters) {
+                // No filters, show all cases
+                document.querySelectorAll('.case-card').forEach(card => {
+                    card.classList.remove('hidden');
+                });
+                return;
+            }
+
+            // Filter cases based on their events
+            document.querySelectorAll('.case-card').forEach(card => {
+                const caseId = card.id;
+                const events = getCaseEvents(caseId);
+
+                let matchesFilter = false;
+
+                for (const event of events) {
+                    // Check event type filter
+                    if (activeEventFilters.eventType && event.eventType !== activeEventFilters.eventType) {
+                        continue;
+                    }
+
+                    // Check date filters
+                    const eventDate = new Date(event.eventDate);
+                    if (activeEventFilters.fromDate && eventDate < new Date(activeEventFilters.fromDate)) {
+                        continue;
+                    }
+                    if (activeEventFilters.toDate && eventDate > new Date(activeEventFilters.toDate)) {
+                        continue;
+                    }
+
+                    // Check description filter
+                    if (activeEventFilters.description && !event.description.toLowerCase().includes(activeEventFilters.description)) {
+                        continue;
+                    }
+
+                    // If we get here, this event matches all filters
+                    matchesFilter = true;
+                    break;
+                }
+
+                if (matchesFilter) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
         // Parse CSV
         function parseCSV(text) {
             const lines = text.trim().split('\n');
@@ -869,6 +1591,7 @@
             document.getElementById('statsContainer').classList.add('active');
             document.getElementById('actionButtons').classList.add('active');
             document.getElementById('searchInput').disabled = false;
+            document.getElementById('advancedSearchToggle').style.display = 'inline-block';
 
             casesData.forEach((caseData, index) => {
                 const caseId = `case-${index}`;
@@ -911,11 +1634,20 @@
                     <div class="case-details">
                         ${detailsHTML}
                     </div>
+                    <div class="case-history-section">
+                        <div class="history-header">
+                            <div class="history-label">📜 Case History</div>
+                            <button class="add-event-btn" onclick="showAddEventForm('${caseId}')">
+                                + Add Event
+                            </button>
+                        </div>
+                        ${renderEventTimeline(caseId)}
+                    </div>
                     <div class="notes-section">
                         <div class="notes-header">
                             <div class="notes-label">Case Notes</div>
                         </div>
-                        <textarea class="notes-textarea" placeholder="Add notes for this case..." 
+                        <textarea class="notes-textarea" placeholder="Add notes for this case..."
                                   data-case-id="${caseId}">${savedNotes}</textarea>
                     </div>
                 `;
@@ -1242,16 +1974,17 @@ ${'='.repeat(80)}
 
         // Clear all data
         function clearAllData() {
-            showModal('Clear All Data', 
-                'This will remove all loaded cases and notes. The database file will not be deleted. This action cannot be undone. Are you sure?',
+            showModal('Clear All Data',
+                'This will remove all loaded cases, notes, and event history. The database file will not be deleted. This action cannot be undone. Are you sure?',
                 [
                     { text: 'Yes, Clear Everything', class: 'btn-danger', action: () => {
                         casesData = [];
                         notesData = {};
                         caseMetadata = {};
+                        caseEvents = {};
                         localStorage.removeItem('docketNotes');
                         localStorage.removeItem('docketCaseMetadata');
-                        
+
                         document.getElementById('caseList').innerHTML = '';
                         document.getElementById('caseList').classList.remove('active');
                         document.getElementById('emptyState').style.display = 'block';
@@ -1260,7 +1993,9 @@ ${'='.repeat(80)}
                         document.getElementById('searchInput').value = '';
                         document.getElementById('searchInput').disabled = true;
                         document.getElementById('csvFile').value = '';
-                        
+                        document.getElementById('advancedSearchToggle').style.display = 'none';
+                        document.getElementById('advancedSearchPanel').classList.remove('active');
+
                         updateDatabaseStats();
                         closeModal();
                     }},
@@ -1274,6 +2009,12 @@ ${'='.repeat(80)}
             loadNotes();
             checkCompatibility();
             updateDatabaseStatus();
+
+            // Add event listeners for advanced search filters
+            document.getElementById('eventTypeFilter').addEventListener('change', applyEventFilters);
+            document.getElementById('fromDateFilter').addEventListener('change', applyEventFilters);
+            document.getElementById('toDateFilter').addEventListener('change', applyEventFilters);
+            document.getElementById('eventDescFilter').addEventListener('input', applyEventFilters);
         }
 
         initialize();
